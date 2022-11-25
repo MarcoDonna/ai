@@ -13,18 +13,12 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ArrayList<Double []> data = new ArrayList<Double []>();
-        for(double i = 0; i < 30; i++){
-            Double[] row = new Double[2];
-            row[0] = i;
-            row[1] = 2 * i + 0.6 + Math.random() * 0.8;
-            data.add(row);
-        }
-        
+        ArrayList<Double[]> data = Utils.linearData(20, 4.5, -3.2, 0.5);
+
         LinearRegression lr = new LinearRegression();        
-        HashMap<String, Double> res = lr.setData(data).fit(100000, 0.001);
+        HashMap<String, Double> res = lr.setData(data).fit(10000000, 0.0001);
         System.out.println(Utils.MSE(data, 1d, 0d));
         System.out.println(Utils.MSE(data, res.get("weight"), res.get("bias")));
-        System.out.println("weight: " + res.get("weight") + ", bias: " + res.get("bias") + ", mse:");
+        System.out.println("weight: " + res.get("weight") + ", bias: " + res.get("bias"));
     }
 }

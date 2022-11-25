@@ -19,8 +19,6 @@ public class LinearRegression{
                 derivativeW += row[0] * (weight * row[0] + bias - row[1]);
                 derivativeB += weight * row[0] + bias - row[1];
             }
-            if(i%1000 == 0)
-                System.out.println("" + derivativeW + ":" + derivativeB + ":" + data.size());
             weight -= learningRate*(derivativeW/data.size());
             bias -= learningRate*(derivativeB/data.size());
         }
