@@ -3,7 +3,7 @@
  */
 package ai;
 
-//import ai.LinearRegression;
+import utils.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,9 +20,11 @@ public class App {
             row[1] = 2 * i + 0.6 + Math.random() * 0.8;
             data.add(row);
         }
-
+        
         LinearRegression lr = new LinearRegression();        
         HashMap<String, Double> res = lr.setData(data).fit(100000, 0.001);
-        System.out.println("weight: " + res.get("weight") + ", bias: " + res.get("bias"));
+        System.out.println(Utils.MSE(data, 1d, 0d));
+        System.out.println(Utils.MSE(data, res.get("weight"), res.get("bias")));
+        System.out.println("weight: " + res.get("weight") + ", bias: " + res.get("bias") + ", mse:");
     }
 }

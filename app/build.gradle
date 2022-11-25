@@ -27,6 +27,7 @@ dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
 
     implementation project(':linearRegression')
+    implementation project(':utils')
 }
 
 application {
