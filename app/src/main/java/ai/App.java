@@ -12,24 +12,9 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ArrayList<Double[]> data = generateClusterData(3, 5, -5, 5, 0, 1);
+        ArrayList<Double[]> data = Utils.clusterData(3, 5, -5, 5, 0, 1);
         KMeans km = new KMeans();
         km.setData(data);
         km.fit(3, 10);
-    }
-
-    private static ArrayList<Double []> generateClusterData(int clusters, int points, double min, double max, double xDeviation, double yDeviation){
-        ArrayList<Double[]> data = new ArrayList<Double[]>();
-            for(int i = 0; i < clusters; i++){
-                double centerX = min + Math.random() * (max - min);
-                double centerY = min + Math.random() * (max - min);
-                for(int j = 0; j < points; j++){
-                    Double[] point = new Double[2];
-                    point[0] = centerX - xDeviation/2 + Math.random() + xDeviation;
-                    point[1] = centerY - xDeviation/2 + Math.random() + yDeviation;
-                    data.add(point);
-                }
-            }
-        return data;
-    }
+    }    
 }

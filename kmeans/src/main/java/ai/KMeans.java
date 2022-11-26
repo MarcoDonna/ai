@@ -1,6 +1,7 @@
 package ai;
 
 import java.util.ArrayList;
+import utils.*;
 
 public class KMeans{
     //set initial centroids ok
@@ -31,9 +32,6 @@ public class KMeans{
                 centroids.set(j, findCentroid(groups.get(j)));
         }
 
-        debugCentroids(centroids);
-        debugGroups(groups);
-
         return groups;        
     }
 
@@ -44,9 +42,9 @@ public class KMeans{
 
         for(Double[] item: data){
             int minIndex = 0;
-            double minDistance = euclideanDistance(item, centroids.get(0));
+            double minDistance = Utils.euclideanDistance(item, centroids.get(0));
             for(int i = 1; i < centroids.size(); i++){
-                double distance = euclideanDistance(item, centroids.get(i));
+                double distance = Utils.euclideanDistance(item, centroids.get(i));
                 if(distance < minDistance){
                     minDistance = distance;
                     minIndex = i;
@@ -54,47 +52,14 @@ public class KMeans{
             }
             groups.get(minIndex).add(item);
         }
+        
         return groups;
     }
 
     private Double[] findCentroid(ArrayList<Double[]> group){
         Double[] centroid= new Double[group.get(0).length];        
         for(int i = 0; i < group.get(0).length; i++)
-            centroid[i] = vectorMeanValue(extractFeature(group, i));
+            centroid[i] = Utils.vectorMeanValue(Utils.extractFeature(group, i));
         return centroid;
-    }
-
-    private Double euclideanDistance(Double[] a, Double[] b){
-        double distance = 0;
-        for(int i = 0; i < a.length; i++)
-            distance += Math.pow(a[i] - b[i], 2);
-        return Math.sqrt(distance);
-    }
-
-    private ArrayList<Double> extractFeature(ArrayList<Double[]> data, int index){
-        ArrayList<Double> feature = new ArrayList<Double>();
-        for(Double[] item: data)
-            feature.add(item[index]);
-        return feature;
-    }
-
-    private Double vectorMeanValue(ArrayList<Double> data){
-        double mean = 0;
-        for(Double item: data)
-            mean += item;
-        return mean/data.size();
-    }
-
-    private void debugGroups(ArrayList<ArrayList<Double[]>> groups){
-        for(ArrayList<Double[]> group: groups){
-            System.out.println("g:");
-            for(Double[] item: group)
-                System.out.println("" + item[0] + ", " + item[1]);
-        }
-    }
-
-    private void debugCentroids(ArrayList<Double[]> centroids){
-        for(Double[] centroid: centroids)
-            System.out.println("centroid:" + centroid[0] + ", " + centroid[1]);
     }
 }
