@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'ai'
-include(':app', ':utils', ':linearRegression')
+include(':app', ':utils', ':linearRegression', ':kmeans')

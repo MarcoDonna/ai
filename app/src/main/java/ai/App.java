@@ -5,7 +5,6 @@ package ai;
 
 import utils.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class App {
     public String getGreeting() {
@@ -13,12 +12,24 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ArrayList<Double[]> data = Utils.linearData(20, 4.5, -3.2, 0.5);
+        ArrayList<Double[]> data = generateClusterData(3, 5, -5, 5, 0, 1);
+        KMeans km = new KMeans();
+        km.setData(data);
+        km.fit(3, 10);
+    }
 
-        LinearRegression lr = new LinearRegression();        
-        HashMap<String, Double> res = lr.setData(data).fit(10000000, 0.0001);
-        System.out.println(Utils.MSE(data, 1d, 0d));
-        System.out.println(Utils.MSE(data, res.get("weight"), res.get("bias")));
-        System.out.println("weight: " + res.get("weight") + ", bias: " + res.get("bias"));
+    private static ArrayList<Double []> generateClusterData(int clusters, int points, double min, double max, double xDeviation, double yDeviation){
+        ArrayList<Double[]> data = new ArrayList<Double[]>();
+            for(int i = 0; i < clusters; i++){
+                double centerX = min + Math.random() * (max - min);
+                double centerY = min + Math.random() * (max - min);
+                for(int j = 0; j < points; j++){
+                    Double[] point = new Double[2];
+                    point[0] = centerX - xDeviation/2 + Math.random() + xDeviation;
+                    point[1] = centerY - xDeviation/2 + Math.random() + yDeviation;
+                    data.add(point);
+                }
+            }
+        return data;
     }
 }
