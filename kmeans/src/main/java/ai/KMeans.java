@@ -37,7 +37,7 @@ public class KMeans{
 
     private ArrayList<ArrayList<Double[]>> split(ArrayList<Double[]> centroids){
         ArrayList<ArrayList<Double[]>> groups = new ArrayList<ArrayList<Double[]>>();
-        for(Double[] centroid: centroids)
+        for(int i = 0; i < centroids.size(); i++)
             groups.add(new ArrayList<Double []>());
 
         for(Double[] item: data){
