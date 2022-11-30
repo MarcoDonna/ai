@@ -6,13 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Utils{
-    public static Double MSE(ArrayList<Double []> data, double weight, double bias){
-        Double mse = 1d/data.size();
-        for(Double[] row: data)
-            mse += Math.pow((row[1] - weight*row[0]+bias), 2);
-        return mse;
-    }
-
     public static ArrayList<Double[]>linearData(int n, double weight, double bias, double random){
         ArrayList<Double []> data = new ArrayList<Double []>();
         for(double i = 0; i < 30; i++){
@@ -46,11 +39,12 @@ public class Utils{
         return Math.sqrt(distance);
     }
 
-    public static ArrayList<Double> extractFeature(ArrayList<Double[]> data, int index){
-        ArrayList<Double> feature = new ArrayList<Double>();
-        for(Double[] item: data)
-            feature.add(item[index]);
-        return feature;
+    public static double probability(ArrayList<String> data, String value){
+        double prob = 0;
+        for(String item: data)
+            if(item.equals(value))
+                prob++;
+        return prob/data.size();
     }
 
     public static Double vectorMeanValue(ArrayList<Double> data){
@@ -58,37 +52,6 @@ public class Utils{
         for(Double item: data)
             mean += item;
         return mean/data.size();
-    }
-
-    public static ArrayList<ArrayList<Integer>> confusionMatrix(ArrayList<String> actual, ArrayList<String> predicted){
-        ArrayList<ArrayList<Integer>> matrix = new ArrayList<>();
-        ArrayList<String> distinctValues = distinct(actual);
-
-        for(int i = 0; i < distinctValues.size(); i++){
-            ArrayList<Integer> row = new ArrayList<>();
-            for(int j = 0; j < distinctValues.size(); j++)
-                row.add(0);
-            matrix.add(row);
-        }
-
-        for(int i = 0; i < actual.size(); i++){
-            int xIndex = distinctValues.indexOf(actual.get(i));
-            int yIndex = distinctValues.indexOf(predicted.get(i));
-            int newVal = matrix.get(xIndex).get(yIndex) + 1;
-            matrix.get(xIndex).set(yIndex, newVal);
-        }
-
-        for(String item: distinctValues)
-            System.out.print("|" + item + "|");
-        System.out.println();
-        for(ArrayList<Integer> row: matrix){
-            for(Integer item: row)
-                System.out.print("|" + item + "|");
-            System.out.println();
-        }
-
-        return matrix;
-            
     }
 
     public static ArrayList<String> distinct(ArrayList<String> data){
@@ -116,6 +79,16 @@ public class Utils{
         return data;
     }
 
+    public static ArrayList<ArrayList<String>> shuffle(ArrayList<ArrayList<String>> data){
+        for(int i = 0; i < data.size(); i++){
+            int randomIndex = (int)Math.floor(Math.random() * data.size());
+            ArrayList<String> temp = data.get(i);
+            data.set(i, data.get(randomIndex));
+            data.set(randomIndex, temp);
+        }
+        return data;
+    }
+
     public static ArrayList<ArrayList<String>> head(ArrayList<ArrayList<String>> data, double n){
         ArrayList<ArrayList<String>> ret = new ArrayList<>();
         for(int i = 0; i < Math.floor(n * data.size()); i++)
@@ -130,6 +103,13 @@ public class Utils{
         return ret;
     }
 
+    public static ArrayList<Double> extractFeature(ArrayList<Double[]> data, int index){
+        ArrayList<Double> feature = new ArrayList<Double>();
+        for(Double[] item: data)
+            feature.add(item[index]);
+        return feature;
+    }
+    
     public static ArrayList<String> extractFeatureString(ArrayList<ArrayList<String>> data, int index){
         ArrayList<String> feature = new ArrayList<String>();
         for(ArrayList<String> row: data)
@@ -146,68 +126,5 @@ public class Utils{
     public static ArrayList<ArrayList<String>> removeRecord(ArrayList<ArrayList<String>> data, int index){
         data.remove(index);
         return data;
-    }
-
-    public static ArrayList<ArrayList<String>> shuffle(ArrayList<ArrayList<String>> data){
-        for(int i = 0; i < data.size(); i++){
-            int randomIndex = (int)Math.floor(Math.random() * data.size());
-            ArrayList<String> temp = data.get(i);
-            data.set(i, data.get(randomIndex));
-            data.set(randomIndex, temp);
-        }
-        return data;
-    }
-
-    public static double informationEntropy(ArrayList<String> data){
-        double entropy = 0;
-        for(String classValue: distinct(data)){
-            double prob = probability(data, classValue);
-            entropy += prob * (Math.log10(prob) / Math.log10(2));
-        }
-        return -entropy;
-    }
-
-    public static double probability(ArrayList<String> data, String value){
-        double prob = 0;
-        for(String item: data)
-            if(item.equals(value))
-                prob++;
-        return prob/data.size();
-    }
-
-    public static double[] precision(ArrayList<ArrayList<Integer>> matrix){
-        double[] ret = new double[matrix.size()];
-        for(int i = 0; i < matrix.size(); i++){
-            int truePositive = matrix.get(i).get(i);
-            int predictedPositive = 0;
-            for(int j = 0; j < matrix.size(); j++)
-                predictedPositive += matrix.get(j).get(i);
-            ret[i] = (double)truePositive/predictedPositive;
-        }
-        return ret;            
-    }
-
-    public static double[] recall(ArrayList<ArrayList<Integer>> matrix){
-        double[] ret = new double[matrix.size()];
-        for(int i = 0; i < matrix.size(); i++){
-            int truePositive = matrix.get(i).get(i);
-            int actualPositive = 0;
-            for(int j = 0; j < matrix.get(i).size(); j++)
-                actualPositive += matrix.get(i).get(j);
-            ret[i] = (double)truePositive/actualPositive;
-        }
-        return ret;            
-    }
-
-    public static double[] f1Score(ArrayList<ArrayList<Integer>> matrix){
-        double[] ret = new double[matrix.size()];
-
-        double[] precision = precision(matrix);
-        double[] recall = recall(matrix);
-
-        for(int i = 0; i < matrix.size(); i++)
-            ret[i] = 2 * (precision[i]*recall[i] / (precision[i] + recall[i]));
-
-        return ret;
     }
 }

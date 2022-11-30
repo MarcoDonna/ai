@@ -1,11 +1,11 @@
 package ai;
 
-import utils.*;
+import utils.metrics.*;
 
 import java.util.ArrayList;
 
 public class DTNode{
-    double split;
+    double splitValue;
     int splitFeatureIndex;
 
     String predicted;
@@ -23,11 +23,11 @@ public class DTNode{
     }
 
     public String classify(ArrayList<String> predictors){
-        if(this.predicted != null)
-            return this.predicted;
+        if(predicted != null)
+            return predicted;
         else{
             double predictorValue = Double.parseDouble(predictors.get(this.splitFeatureIndex));
-            if(predictorValue > split)
+            if(predictorValue > splitValue)
                 return right.classify(predictors);
             return left.classify(predictors);
         }        
@@ -63,10 +63,10 @@ public class DTNode{
             }
         }
 
-        this.split = bestSplitValue;
+        this.splitValue = bestSplitValue;
         this.splitFeatureIndex = bestPredictorIndex;
 
-        if(it-- > 0 && Utils.informationEntropy(classes) > 0){
+        if(it-- > 0 && Metrics.informationEntropy(classes) > 0){
             right = new DTNode().setData(rightPredictors, rightClasses).fit(it);
             left = new DTNode().setData(leftPredictors, leftClasses).fit(it);
         }else{
@@ -90,7 +90,8 @@ public class DTNode{
     }
 
     public double informationGain(int featureIndex, double value){
-        double gain = Utils.informationEntropy(classes);
+        //InformationGain = EntropyParent - WeightedAverage(EntropyChildren)
+        double gain = Metrics.informationEntropy(classes);
         
         ArrayList<String> left = new ArrayList<>();
         ArrayList<String> right = new ArrayList<>();
@@ -102,6 +103,6 @@ public class DTNode{
             else
                 left.add(classes.get(i));
         }
-        return gain - ((double)left.size()/classes.size()*Utils.informationEntropy(left) + (double)right.size()/classes.size()*Utils.informationEntropy(right));
+        return gain - ((double)left.size()/classes.size()*Metrics.informationEntropy(left) + (double)right.size()/classes.size()*Metrics.informationEntropy(right));
     }
 }

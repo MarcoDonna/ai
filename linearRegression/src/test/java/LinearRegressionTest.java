@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import ai.LinearRegression;
-import utils.Utils;
+import utils.*;
+import utils.metrics.*;
 
 class LinearRegressionTest{
     @Test
@@ -19,8 +20,8 @@ class LinearRegressionTest{
         double weight = res.get("weight"), 
             bias = res.get("bias");
 
-        double initialMSE = Utils.MSE(data, 1d, 0d), 
-            finalMSE = Utils.MSE(data, weight, bias);
+        double initialMSE = Metrics.MSE(data, 1d, 0d), 
+            finalMSE = Metrics.MSE(data, weight, bias);
 
         assertTrue(finalMSE < initialMSE, "Decrease MSE");
         assertTrue(4.4 < weight && weight < 4.6, "Weight between 4.4 and 4.6");

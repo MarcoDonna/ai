@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 
 import ai.DTNode;
-import utils.Utils;
+import utils.*;
+import utils.metrics.*;
 
 public class DecisionTreeTest{
     @Test
@@ -30,34 +31,14 @@ public class DecisionTreeTest{
             predicted.add(rootNode.classify(test.get(i)));
         }
 
-        ArrayList<ArrayList<Integer>> matrix = Utils.confusionMatrix(actual, predicted);
+        ArrayList<ArrayList<Integer>> matrix = Metrics.confusionMatrix(actual, predicted);
 
         double macroF1Score = 0;
-        for(double score: Utils.f1Score(matrix))
+        for(double score: Metrics.f1Score(matrix))
             macroF1Score += score;
         
         macroF1Score/=matrix.size();
 
         assertTrue(macroF1Score >= 0.9, "Model f1 score above 0.9 (" + macroF1Score + ")");
-
-        
-        /*System.out.println("Precision:");
-        double [] precision = Utils.precision(matrix);
-        for(double p: precision)
-            System.out.print("|" + p + "|");
-
-        System.out.println("\nRecall:");    
-        double[] recall = Utils.recall(matrix);
-        for(double p: recall)
-            System.out.print("|" + p + "|");
-        
-        System.out.println("\nF1 Score:");
-
-        double[] f1 = Utils.f1Score(matrix);
-        for(double p: f1)
-            System.out.print("|" + p + "|");
-
-        double macrof1score = */
-
     }
 }
