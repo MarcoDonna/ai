@@ -28,6 +28,7 @@ dependencies {
 
     implementation project(':linearRegression')
     implementation project(':kmeans')
+    implementation project(':decisionTree')
     implementation project(':utils')
 }
 
