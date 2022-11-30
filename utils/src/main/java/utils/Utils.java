@@ -2,10 +2,8 @@ package utils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Utils{
     public static Double MSE(ArrayList<Double []> data, double weight, double bias){
@@ -175,5 +173,41 @@ public class Utils{
             if(item.equals(value))
                 prob++;
         return prob/data.size();
+    }
+
+    public static double[] precision(ArrayList<ArrayList<Integer>> matrix){
+        double[] ret = new double[matrix.size()];
+        for(int i = 0; i < matrix.size(); i++){
+            int truePositive = matrix.get(i).get(i);
+            int predictedPositive = 0;
+            for(int j = 0; j < matrix.size(); j++)
+                predictedPositive += matrix.get(j).get(i);
+            ret[i] = (double)truePositive/predictedPositive;
+        }
+        return ret;            
+    }
+
+    public static double[] recall(ArrayList<ArrayList<Integer>> matrix){
+        double[] ret = new double[matrix.size()];
+        for(int i = 0; i < matrix.size(); i++){
+            int truePositive = matrix.get(i).get(i);
+            int actualPositive = 0;
+            for(int j = 0; j < matrix.get(i).size(); j++)
+                actualPositive += matrix.get(i).get(j);
+            ret[i] = (double)truePositive/actualPositive;
+        }
+        return ret;            
+    }
+
+    public static double[] f1Score(ArrayList<ArrayList<Integer>> matrix){
+        double[] ret = new double[matrix.size()];
+
+        double[] precision = precision(matrix);
+        double[] recall = recall(matrix);
+
+        for(int i = 0; i < matrix.size(); i++)
+            ret[i] = 2 * (precision[i]*recall[i] / (precision[i] + recall[i]));
+
+        return ret;
     }
 }

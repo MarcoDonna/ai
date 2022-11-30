@@ -30,6 +30,23 @@ public class App {
             predicted.add(rootNode.classify(test.get(i)));
         }
 
-        Utils.confusionMatrix(actual, predicted);
+        ArrayList<ArrayList<Integer>> matrix = Utils.confusionMatrix(actual, predicted);
+        
+        System.out.println("Precision:");
+        double [] precision = Utils.precision(matrix);
+        for(double p: precision)
+            System.out.print("|" + p + "|");
+
+        System.out.println("\nRecall:");    
+        double[] recall = Utils.recall(matrix);
+        for(double p: recall)
+            System.out.print("|" + p + "|");
+        
+        System.out.println("\nF1 Score:");
+
+        double[] f1 = Utils.f1Score(matrix);
+        for(double p: f1)
+            System.out.print("|" + p + "|");
+
     }
 }
