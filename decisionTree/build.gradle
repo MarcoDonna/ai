@@ -20,3 +20,7 @@ dependencies {
 
     implementation project(':utils')
 }
+
+test {
+    useJUnitPlatform()
+}
