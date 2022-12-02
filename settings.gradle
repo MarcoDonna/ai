@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'ai'
-include(':app', ':utils', ':linearRegression', ':kmeans', ':decisionTree')
+include(':app', ':utils', ':linearRegression', ':kmeans', ':decisionTree', ':naiveBayesClassifier')
